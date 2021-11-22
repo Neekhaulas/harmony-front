@@ -1,0 +1,75 @@
+{{page-title "Server"}}
+<div class="content-menu">
+    <div class="content-menu-main">
+        <div class="channel-list-top">
+            <h5>{{@model.name}}</h5>
+            <button type="button" {{on "click" this.openSettings}}><FaIcon @icon="cog" /></button>
+        </div>
+        <Channel::List @server={{@model}} />
+        <Channel::Creator @server={{@model}} />
+        <LinkTo @route="emoji" @model={{@model.id}}>Emojis</LinkTo>
+    </div>
+    <UserArea />
+</div>
+<div class="main-content">
+    {{outlet}}
+</div>
+{{#if this.settingsOpen}}
+<div class="fixed z-10 inset-0 overflow-y-auto" role="dialog" aria-modal="true">
+    <div class="flex min-h-screen text-center md:block md:px-2 lg:px-4" style="font-size: 0;">
+        <!--
+      Background overlay, show/hide based on modal state.
+
+      Entering: "ease-out duration-300"
+        From: "opacity-0"
+        To: "opacity-100"
+      Leaving: "ease-in duration-200"
+        From: "opacity-100"
+        To: "opacity-0"
+    -->
+        <div class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity md:block" aria-hidden="true">
+        </div>
+
+        <!-- This element is to trick the browser into centering the modal contents. -->
+        <span class="hidden md:inline-block md:align-middle md:h-screen" aria-hidden="true">&#8203;</span>
+
+        <!--
+      Modal panel, show/hide based on modal state.
+
+      Entering: "ease-out duration-300"
+        From: "opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
+        To: "opacity-100 translate-y-0 md:scale-100"
+      Leaving: "ease-in duration-200"
+        From: "opacity-100 translate-y-0 md:scale-100"
+        To: "opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
+    -->
+        <div
+            class="flex text-base text-left transform transition w-full md:inline-block md:max-w-2xl md:px-4 md:my-8 md:align-middle lg:max-w-4xl">
+            <div
+                class="w-full bg-gray-700 relative flex items-center px-4 pt-14 pb-8 overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
+                <button type="button"
+                    class="absolute top-4 right-4 text-gray-400 hover:text-gray-500 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8">
+                    <span class="sr-only">Close</span>
+                    <!-- Heroicon name: outline/x -->
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
+                <div class="w-full">
+                    <h2 class="text-2xl font-extrabold">Server settings</h2>
+                    <div>
+                        Server name <Input class="text-black" />
+                    </div>
+                    <div>
+                        Allow guests <input id="remember-me" name="remember-me" type="checkbox"
+                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/if}}

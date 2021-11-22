@@ -1,0 +1,25 @@
+{{page-title "Emoji"}}
+<div>
+    <form>
+        <Input type="text" @value={{this.shortcut}} />
+        <input type="file" {{on "change" changeFile}} />
+        <button {{on "click" this.createEmoji}} type="button">Create</button>
+    </form>
+    <div>
+        <h2 class="text-xl">Emojis</h2>
+        <div class="flex">
+            <div class="w-40 p-4">Name</div>
+            <div class="w-40 p-4">Emoji</div>
+            <div class="w-40 p-4">How to use it</div>
+        </div>
+        <div class="divide-y divide-black divide-opacity-25">
+            {{#each this.model.emojis as |emoji|}}
+            <div class="flex">
+                <div class="w-40 p-4">{{emoji.name}}</div>
+                <div class="w-40 p-4"><img class="emoji" style="vertical-align: middle;" src="{{api-url}}{{emoji._id}}.png" width="22" height="22" /></div>
+                <div class="w-40 p-4">&lt;:{{emoji._id}}:&gt;</div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>

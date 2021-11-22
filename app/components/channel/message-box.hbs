@@ -1,0 +1,16 @@
+<div class="message-box">
+    <div class="message-box-container">
+        <button class="message-box-container-button" type="button">
+            <FaIcon @icon="plus-circle" @size="lg" />
+        </button>
+        <Input class="message-box-container-input" {{on "keyup" this.keyCheck}} @value={{this.message}} />
+        <button class="message-box-container-button" type="button" {{on 'click' this.togglePicker}}>
+            <FaIcon @icon="laugh" @size="lg" />
+        </button>
+        {{#if this.isPickerOpen}}
+        <div {{did-insert this.hookEmoji}} {{on-click-outside this.closePicker}} class={{if this.isPickerOpen "emoji-picker" "hidden" }}>
+            <EmojiPicker />
+        </div>
+        {{/if}}
+    </div>
+</div>

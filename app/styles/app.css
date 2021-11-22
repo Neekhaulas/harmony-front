@@ -1,0 +1,170 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+body, html {
+    width: 100%;
+    height: 100%;
+    background-color: #5766f2;
+}
+
+.app {
+    @apply flex text-white;
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.base {
+    @apply flex flex-grow;
+}
+
+.server-menu {
+    @apply flex flex-col flex-none relative;
+    background-color: #202225;
+    width: 72px;
+}
+
+.content-menu {
+    @apply flex flex-col;
+    width: 240px;
+    background-color: #2f3136;
+    min-height: 0;
+}
+
+.content-menu-main {
+    @apply flex flex-1 flex-col;
+    min-height: 0;
+}
+
+.content {
+    @apply flex-grow flex;
+    background-color: #363a3e;
+}
+
+.invite {
+    @apply flex-1;
+}
+
+.main-content {
+    @apply flex-1;
+}
+
+.server-link {
+    @apply rounded-3xl w-12 h-12 m-3 flex items-center justify-center hover:rounded-xl transition-all duration-100 ease-linear;
+    background-color: #36393f;
+}
+
+.server-link-selected {
+    @apply rounded-xl;
+}
+
+.channel-link {
+    @apply flex items-center ml-2 text-gray-400 hover:text-gray-200 h-8 hover:bg-gray-700 rounded leading-4 mr-3;
+}
+
+.channel-content {
+    @apply flex flex-col h-full;
+}
+
+.channel-list {
+    overflow: hidden auto;
+}
+
+.channel-content > h5 {
+    @apply flex h-12 items-center shadow font-bold pl-4 pr-3;
+}
+
+.channel-list-top {
+    @apply flex flex-none h-12 items-center shadow font-bold pl-4 justify-between pr-3;
+}
+
+.messages-list {
+    @apply flex-1 overflow-y-auto overflow-x-hidden mr-2 ml-2;
+}
+
+.message-box {
+    @apply flex h-16;
+}
+
+.message-box-container {
+    @apply w-full ml-4 mr-4 rounded-lg h-11 flex-1 flex flex-grow;
+    background-color: #40454a;
+}
+
+.message-box-container-input {
+    @apply text-white flex-grow focus:outline-none;
+    background-color: #40454a;
+}
+
+.message-box-container-button {
+    @apply flex-none w-12 flex items-center justify-center text-gray-400 hover:text-gray-100;
+}
+
+.message {
+    @apply pr-12;
+    padding-left: 72px;
+}
+
+.message-info {
+    @apply mt-3;
+}
+
+.message-avatar {
+    @apply absolute left-4;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.message-author {
+    @apply text-base;
+}
+
+.message-time {
+    @apply text-gray-400 text-xs;
+}
+
+.message-wrapper {
+    @apply relative;
+}
+
+.user-area {
+    @apply h-14 flex-none p-2;
+    background: #292b2f;
+}
+
+.user-area-avatar {
+    @apply inline-block w-8 h-8 mr-2 ;
+}
+
+.user-area-username {
+    @apply inline align-top text-sm;
+}
+
+.user-area-avatar > .avatar {
+    @apply inline;
+}
+
+.tooltip-inner {
+    @apply inline-block w-max font-bold text-base;
+}
+
+.avatar {
+    border-radius: 50%;
+}
+
+.form {
+    @apply text-white;
+    background-color: #36393f;
+}
+
+.emoji {
+    @apply inline-block;
+    width: 22px;
+    height: 22px;
+}
+
+.emoji-picker {
+    @apply absolute right-4 bottom-20;
+}

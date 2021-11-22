@@ -1,0 +1,6 @@
+{{page-title "Channel"}}
+<div class="channel-content">
+    <h5><FaIcon @icon="hashtag" />&nbsp;{{this.model.channel.name}}</h5>
+    <Channel::MessagesList @channel={{this.channel}} />
+    <Channel::MessageBox @channelId={{this.model.channel.id}} />
+</div>

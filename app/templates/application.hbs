@@ -1,7 +1,31 @@
-{{page-title "Front"}}
-
-{{!-- The following component displays Ember's default welcome message. --}}
-<WelcomePage />
-{{!-- Feel free to remove this! --}}
-
-{{outlet}}
+{{page-title "Harmony"}}
+{{#if this.isAuthenticated}}
+{{#if this.isOnline}}
+<div class="app">
+  <div class="server-menu">
+    <Server::List />
+    <Server::Creator />
+  </div>
+  <div class="base">
+    <div class="content">
+      {{outlet}}
+    </div>
+  </div>
+</div>
+{{else}}
+<div class='offline'>
+  <div class='connecting-to-socket'>
+    <h1>Connecting...</h1>
+    <a href="#" {{on "click" this.invalidateSession}}>Logout</a>
+  </div>
+</div>
+{{/if}}
+{{else}}
+<div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8 p-4 rounded form divide-y divide-black divide-opacity-25">
+    <Register::Form />
+    <Login::Form />
+    <Guest::Form />
+  </div>
+</div>
+{{/if}}

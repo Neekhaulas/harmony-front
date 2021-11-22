@@ -1,0 +1,7 @@
+<div {{on "contextmenu" this.editMessage}}>
+    {{#if this.editing}}
+    <Input class="text-black" {{on "keyup" this.checkKey }} @value={{this.value}} />
+    {{else}}
+    {{{emoji this.args.content.content}}}
+    {{/if}}
+</div>
