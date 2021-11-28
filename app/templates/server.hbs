@@ -2,12 +2,12 @@
 <div class="content-menu">
     <div class="content-menu-main">
         <div class="channel-list-top">
-            <h5>{{@model.name}}</h5>
+            <h5>{{this.server.name}}</h5>
             <button type="button" {{on "click" this.openSettings}}><FaIcon @icon="cog" /></button>
         </div>
-        <Channel::List @server={{@model}} />
-        <Channel::Creator @server={{@model}} />
-        <LinkTo @route="emoji" @model={{@model.id}}>Emojis</LinkTo>
+        <Channel::List @server={{this.server}} />
+        <Channel::Creator @server={{this.server.id}} />
+        <LinkTo @route="emoji" @model={{this.server.id}}>Emojis</LinkTo>
     </div>
     <UserArea />
 </div>

@@ -31,10 +31,25 @@ export default class MessageContentComponent extends Component {
     }
   }
 
-  updateMessage() {
-    if (this.value === '') {
+  @action
+  update(content) {
+    this.updateMessage(content);
+    this.editing = false;
+  }
+
+  @action
+  cancel() {
+    this.editing = false;
+  }
+
+  get hasAttachments() {
+    return this.args.content.attachments.length > 0;
+  }
+
+  updateMessage(content) {
+    if (content === '') {
       fetch(
-        `${ENV.apiUrl}/channels/${this.args.content.channel}/messages/${this.args.content.id}`,
+        `${ENV.apiUrl}/channels/${this.args.content.channel}/messages/${this.args.content._id}`,
         {
           method: 'DELETE',
           headers: {
@@ -43,9 +58,9 @@ export default class MessageContentComponent extends Component {
           },
         }
       );
-    } else if (this.value !== this.args.content.content) {
+    } else if (content !== this.args.content.content) {
       fetch(
-        `${ENV.apiUrl}/channels/${this.args.content.channel}/messages/${this.args.content.id}`,
+        `${ENV.apiUrl}/channels/${this.args.content.channel}/messages/${this.args.content._id}`,
         {
           method: 'PUT',
           headers: {
@@ -53,7 +68,7 @@ export default class MessageContentComponent extends Component {
             Authorization: `Bearer ${this.session.data.authenticated.access_token}`,
           },
           body: JSON.stringify({
-            content: this.value,
+            content: content,
           }),
         }
       );

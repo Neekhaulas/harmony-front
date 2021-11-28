@@ -1,6 +1,24 @@
 {{page-title "Channel"}}
+<div class="channel-header">
+    <div class="channel-name">
+        <FaIcon @icon="hashtag" />&nbsp;{{this.channel.name}}
+    </div>
+    <div>
+        <FaIcon class="channel-header-button" @size="lg" @icon="hashtag" />
+        <FaIcon class="channel-header-button" @size="lg" @icon="bell" />
+        <FaIcon class="channel-header-button" @size="lg" @icon="thumbtack" />
+        <FaIcon class="channel-header-button" @size="lg" @icon="user-friends" />
+        <Input class="channel-header-button search" placeholder="Search" type="text" />
+        <FaIcon class="channel-header-button" @size="lg" @icon="inbox" />
+        <FaIcon class="channel-header-button" @size="lg" @icon="question-circle" />
+    </div>
+</div>
 <div class="channel-content">
-    <h5><FaIcon @icon="hashtag" />&nbsp;{{this.model.channel.name}}</h5>
-    <Channel::MessagesList @channel={{this.channel}} />
-    <Channel::MessageBox @channelId={{this.model.channel.id}} />
+    <div class="message-block">
+        <Channel::MessagesList @channel={{this.channel}} />
+        <Channel::MessageBox @channelId={{this.channel.id}} />
+    </div>
+    <div class="user-list">
+        <UserList @channel={{this.channel}} />
+    </div>
 </div>

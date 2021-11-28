@@ -1,22 +1,26 @@
 <div {{did-insert (action this.storeToService)}} class="messages-list">
-    {{#each this.messages as |message index|}}
-    <div class="message-wrapper">
-        <div class="message" {{did-insert (action this.render)}}>
-            {{#if (render-message message.owner)}}
-            <div class="message-info">
-                <div class="message-avatar">
-                    <Avatar @author={{message.owner}} />
+    <div>
+        {{#each this.messages as |message index|}}
+        <div class="message-wrapper">
+            <div class="message" {{did-insert (action this.render)}}>
+                {{#if message.renderUserInfo}}
+                <div class="message-info">
+                    <div class="message-avatar">
+                        <Avatar @author={{message.owner}} />
+                    </div>
+                    <div>
+                        {{#if message.fromDiscord}}
+                        {{message.author}}
+                        {{else}}
+                        <Message::Author @author={{message.owner}} />
+                        {{/if}}
+                        <Message::Time @time={{message.createdAt}} />
+                    </div>
                 </div>
-                <div>
-                    <Message::Author @author={{message.owner}} />
-                    <Message::Time @time={{message.createdAt}} />
-                </div>
-            </div>
-            {{/if}}
-            <div>
+                {{/if}}
                 <Message::Content @content={{message}} />
             </div>
         </div>
+        {{/each}}
     </div>
-    {{/each}}
 </div>

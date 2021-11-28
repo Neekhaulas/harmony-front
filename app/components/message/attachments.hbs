@@ -1,0 +1,7 @@
+{{#each this.args.attachments as |attachment|}}
+{{#if (is-media-attachment attachment)}}
+{{{render-attachment attachment.url attachment.fileName}}}
+{{else}}
+<Message::FileAttachment @attachment={{attachment}} />
+{{/if}}
+{{/each}}

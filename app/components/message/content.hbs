@@ -1,7 +1,13 @@
+{{#if this.editing}}
+<Editor::ProseMirror @onSend={{this.update}} @onCancel={{this.cancel}}>
+    <div class="hidden">{{{editor-format this.args.content.content}}}</div>
+</Editor::ProseMirror>
+<div class="message-edit-tooltip">escape to cancel • enter to save</div>
+{{else}}
 <div {{on "contextmenu" this.editMessage}}>
-    {{#if this.editing}}
-    <Input class="text-black" {{on "keyup" this.checkKey }} @value={{this.value}} />
-    {{else}}
     {{{emoji this.args.content.content}}}
-    {{/if}}
 </div>
+{{#if this.hasAttachments}}
+    <Message::Attachments @attachments={{this.args.content.attachments}} />
+{{/if}}
+{{/if}}

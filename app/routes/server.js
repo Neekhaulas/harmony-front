@@ -12,16 +12,7 @@ export default class ServerRoute extends Route {
   }
 
   model(params) {
-    let data = this.store.peekRecord('server', params.server_id);
-    if (data === null) {
-      data = this.store.findRecord('server', params.server_id);
-    }
-
-    return data;
-  }
-
-  afterModel(model) {
-    this.user.setCurrentServer(model);
-    this.socket.subscribeServer(model.id);
+    this.user.setCurrentServer(params.server_id);
+    return null;
   }
 }

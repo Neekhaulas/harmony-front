@@ -14,7 +14,8 @@ export default class MessageAvatarComponent extends Component {
   }
 
   get avatar() {
-    if (this.user === null) return `https://eu.ui-avatars.com/api/?name=`;
-    return `https://eu.ui-avatars.com/api/?name=${this.user.get('name') ?? ''}`;
+    return `https://eu.ui-avatars.com/api/?name=${
+      this.user?.get('username') ?? ''
+    }`;
   }
 }

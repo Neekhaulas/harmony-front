@@ -1,7 +1,9 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { setCurrentServer, setCurrentChannel } from '../actions/servers';
+import { connect } from 'ember-redux';
 
-export default class UserService extends Service {
+class UserService extends Service {
   @tracked user = null;
   @tracked currentServer = null;
   @tracked servers = [];
@@ -15,10 +17,19 @@ export default class UserService extends Service {
   }
 
   setCurrentServer(server) {
-    if (this.currentServer !== null) {
-      this.currentServer.selected = false;
-    }
-    this.currentServer = server;
-    server.selected = true;
+    this.actions.setCurrentServer(server);
+  }
+
+  setCurrentChannel(channel) {
+    this.actions.setCurrentChannel(channel);
   }
 }
+
+const dispatchToActions = (dispatch) => {
+  return {
+    setCurrentServer: (server) => setCurrentServer(server, dispatch),
+    setCurrentChannel: (channel) => setCurrentChannel(channel, dispatch),
+  };
+};
+
+export default connect(null, dispatchToActions)(UserService);

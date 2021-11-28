@@ -3,7 +3,8 @@
         <button class="message-box-container-button" type="button">
             <FaIcon @icon="plus-circle" @size="lg" />
         </button>
-        <Input class="message-box-container-input" {{on "keyup" this.keyCheck}} @value={{this.message}} />
+        <!-- <Input {{did-insert this.focus}} {{did-update this.focus channel}} class="message-box-container-input" {{on "keyup" this.keyCheck}} @value={{this.message}} /> -->
+        <Editor::ProseMirror @main={{true}} {{did-insert this.editor}} @onContentChange={{this.onContentChange}} @onSend={{this.send}} @key={{channel}} />
         <button class="message-box-container-button" type="button" {{on 'click' this.togglePicker}}>
             <FaIcon @icon="laugh" @size="lg" />
         </button>

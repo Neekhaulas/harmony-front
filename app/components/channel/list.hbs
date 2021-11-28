@@ -1,9 +1,5 @@
 <div class="channel-list">
-    {{#if this.server}}
-    {{#each this.server.channels as |channel|}}
-    <LinkTo class="channel-link" @route="server.channel" @model={{channel._id}}>
-        <FaIcon @icon="hashtag" />&nbsp;{{channel.name}}
-    </LinkTo>
+    {{#each this.channels as |channel|}}
+    <Channel::Link @name={{channel.name}} @id={{channel.id}} @selected={{if (eq channel.id this.currentChannel) true false}} />
     {{/each}}
-    {{/if}}
 </div>

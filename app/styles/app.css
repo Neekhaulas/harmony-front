@@ -1,6 +1,10 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "./animations.css";
+@import "./ember-cli-prosemirror.css";
+@import "./menu.css";
+@import "./variables.css";
 
 body, html {
     width: 100%;
@@ -47,7 +51,7 @@ body, html {
 }
 
 .main-content {
-    @apply flex-1;
+    @apply flex-1 flex flex-col;
 }
 
 .server-link {
@@ -60,19 +64,67 @@ body, html {
 }
 
 .channel-link {
-    @apply flex items-center ml-2 text-gray-400 hover:text-gray-200 h-8 hover:bg-gray-700 rounded leading-4 mr-3;
+    @apply flex content-between items-center ml-2 h-8 text-gray-400 rounded leading-4 mr-3;
 }
 
-.channel-content {
-    @apply flex flex-col h-full;
+.channel-link-open {
+    @apply text-gray-200 bg-gray-700;
+}
+
+.channel-link-name {
+    @apply flex-1;
+}
+
+.channel {
+    @apply flex flex-col h-full flex-1;
 }
 
 .channel-list {
     overflow: hidden auto;
 }
 
-.channel-content > h5 {
-    @apply flex h-12 items-center shadow font-bold pl-4 pr-3;
+.message-block {
+    @apply flex flex-col flex-1;
+}
+
+.channel-content {
+    @apply flex flex-1 min-h-0;
+}
+
+.user-list {
+    @apply flex flex-col;
+    width: 240px;
+    background-color: #2f3136;
+}
+
+.user {
+    display: flex;
+}
+
+.user > img {
+    width: 40px;
+    height: 40px;
+}
+
+.channel-header {
+    @apply flex flex-none relative h-12 w-full shadow font-bold;
+}
+
+.channel-header > div {
+    @apply flex items-center pl-4 pr-3;
+}
+
+.channel-header > .channel-name {
+    @apply flex-1;
+}
+
+.channel-header-button {
+    @apply mx-2;
+}
+
+.search {
+    @apply p-1 rounded;
+    background-color: #202225;
 }
 
 .channel-list-top {
@@ -80,15 +132,46 @@ body, html {
 }
 
 .messages-list {
-    @apply flex-1 overflow-y-auto overflow-x-hidden mr-2 ml-2;
+    @apply flex-1 overflow-y-auto overflow-x-hidden;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+
+.ProseMirror-separator {
+    display: inline !important;
+    border: none !important;
+    margin: 0 !important;
+}
+  
+::-webkit-scrollbar-thumb {
+border-radius: 4px;
+background-color: rgba(0, 0, 0, .5);
+}
+
+.message-box-container > .prosemirror-editor {
+    @apply flex overflow-y-scroll items-center;
+    min-height: 48px;
+    max-height: 500px;
+}
+
+.message > .prosemirror-editor {
+    @apply p-2 rounded-xl;
+    background-color: #40444b;
 }
 
 .message-box {
-    @apply flex h-16;
+    @apply flex;
+}
+
+.message-edit-tooltip {
+    @apply text-xs;
 }
 
 .message-box-container {
-    @apply w-full ml-4 mr-4 rounded-lg h-11 flex-1 flex flex-grow;
+    @apply w-full ml-4 mr-4 mb-4 px-4 rounded-lg flex-1 flex flex-grow;
     background-color: #40454a;
 }
 
@@ -98,7 +181,12 @@ body, html {
 }
 
 .message-box-container-button {
-    @apply flex-none w-12 flex items-center justify-center text-gray-400 hover:text-gray-100;
+    @apply flex-none mr-2 flex justify-center text-gray-400 hover:text-gray-100;
+    margin-top: 14px;
+}
+
+.ProseMirror {
+    @apply flex-1;
 }
 
 .message {
@@ -126,7 +214,8 @@ body, html {
 }
 
 .message-wrapper {
-    @apply relative;
+    @apply relative hover:bg-gray-600;
+    padding: 2px;
 }
 
 .user-area {
@@ -154,6 +243,14 @@ body, html {
     border-radius: 50%;
 }
 
+.user {
+    @apply items-center m-2;
+}
+
+.user-avatar {
+    @apply w-8 mr-2;
+}
+
 .form {
     @apply text-white;
     background-color: #36393f;
@@ -167,4 +264,39 @@ body, html {
 
 .emoji-picker {
     @apply absolute right-4 bottom-20;
+}
+
+.ember-drop-zone {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    visibility: hidden;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.link {
+    @apply text-blue-400;
+}
+
+.image-attachment {
+    max-width: 500px;
+    max-height: 375px;
+}
+
+.file-attachment {
+    @apply inline-block;
+}
+
+.file-attachment > div {
+    @apply flex flex-1 flex-row p-2 items-center;
+    border-color: #292b2f;
+    background-color: #2f3136;
+}
+
+.file-attachment > div > div {
+    @apply flex flex-col mx-3;
 }

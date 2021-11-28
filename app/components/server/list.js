@@ -1,12 +1,14 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
+import { connect } from 'ember-redux';
+import { currentServer, getServers } from '../../reducers/servers';
+class ServerListComponent extends Component {}
 
-export default class ServerListComponent extends Component {
-  @service store;
+const stateToComputed = (state) => {
+  return {
+    currentServer: currentServer(state),
+    servers: getServers(state),
+  };
+};
 
-  get servers() {
-    return this.store.peekAll('server');
-  }
-}
+export default connect(stateToComputed)(ServerListComponent);

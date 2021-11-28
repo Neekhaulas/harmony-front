@@ -12,7 +12,7 @@ export default class ChannelCreatorComponent extends Component {
   createChannel() {
     this.name = prompt('Channel name');
     if (this.name !== null) {
-      fetch(`${ENV.apiUrl}/servers/${this.args.server.get('id')}/channels`, {
+      fetch(`${ENV.apiUrl}/servers/${this.args.server}/channels`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -21,8 +21,6 @@ export default class ChannelCreatorComponent extends Component {
         body: JSON.stringify({
           name: this.name,
         }),
-      }).then(() => {
-        this.socket.getMe();
       });
     }
   }

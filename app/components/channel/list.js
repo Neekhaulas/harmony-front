@@ -1,10 +1,17 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { connect } from 'ember-redux';
+import {
+  getChannelsOfSelectedServer,
+  currentChannel,
+} from '../../reducers/servers';
 
-export default class ChannelListComponent extends Component {
-  @service store;
+class ChannelListComponent extends Component {}
 
-  get server() {
-    return this.args.server;
-  }
-}
+const stateToComputed = (state) => {
+  return {
+    currentChannel: currentChannel(state),
+    channels: getChannelsOfSelectedServer(state),
+  };
+};
+
+export default connect(stateToComputed)(ChannelListComponent);

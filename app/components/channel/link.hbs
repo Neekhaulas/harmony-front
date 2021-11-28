@@ -1,0 +1,13 @@
+<div ...attributes {{on 'mouseenter' this.hover}} {{on 'mouseleave' this.leave}}>
+    <LinkTo class={{if this.isOptionOpen "channel-link channel-link-open" "channel-link"}} @route="server.channel" @model={{this.args.id}}>
+        <div class="channel-link-name">
+            <FaIcon @icon="hashtag" />&nbsp;{{this.args.name}}
+        </div>
+        {{#if this.isOptionOpen}}
+        <div>
+            <FaIcon @icon="user-plus" />
+            <FaIcon @icon="cog" />
+        </div>
+        {{/if}}
+    </LinkTo>
+</div>

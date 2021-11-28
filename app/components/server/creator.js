@@ -20,8 +20,6 @@ export default class ServerCreatorComponent extends Component {
       body: JSON.stringify({
         name: this.name,
       }),
-    }).then(() => {
-      this.socket.getMe();
     });
   }
 }

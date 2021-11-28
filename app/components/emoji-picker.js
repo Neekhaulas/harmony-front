@@ -11,7 +11,6 @@ export default class EmojiPickerComponent extends Component {
     for (let i = 0; i < servers.length; i++) {
       if (servers.objectAt(i).emojis !== undefined) {
         servers.objectAt(i).emojis.forEach((emoji) => {
-          console.log(emoji);
           emojis.push({
             category: undefined,
             name: emoji._id.toString(),

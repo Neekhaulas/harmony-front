@@ -1,10 +1,10 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import { getCurrentChannelMessages } from '../../reducers/servers';
+import { connect } from 'ember-redux';
 
-export default class MessageListComponent extends Component {
-  @service store;
+class MessageListComponent extends Component {
   @service('chatscroll') chatscroll;
-  @service('render-message') renderMessage;
 
   render() {
     if (this.chatscroll.isDownWhenReceived) {
@@ -15,9 +15,12 @@ export default class MessageListComponent extends Component {
   storeToService(element) {
     this.chatscroll.setChatElement(element);
   }
-
-  get messages() {
-    this.renderMessage.reset();
-    return this.store.peekAll('message');
-  }
 }
+
+const stateToComputed = (state) => {
+  return {
+    messages: getCurrentChannelMessages(state),
+  };
+};
+
+export default connect(stateToComputed)(MessageListComponent);

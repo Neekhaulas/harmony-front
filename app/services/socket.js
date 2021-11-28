@@ -1,15 +1,25 @@
 import Service, { inject as service } from '@ember/service';
-import { set } from '@ember/object';
+import { set, action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { later } from '@ember/runloop';
 import ENV from 'front/config/environment';
+import { connect } from 'ember-redux';
+import {
+  addMessage,
+  addServer,
+  addServers,
+  deleteMessage,
+  updateServer,
+  addChannel,
+} from '../actions/servers';
 
-export default class SocketService extends Service {
+class SocketService extends Service {
   @service('websockets') socketService;
   @service store;
   @service session;
   @service chatscroll;
   @service user;
+  @service sound;
 
   socket = null;
   ping = null;
@@ -74,67 +84,71 @@ export default class SocketService extends Service {
     console.log(event, data);
 
     switch (event) {
-      case 'newMessage':
+      case 'MESSAGE_CREATE':
         this.handleMessageData(data, true);
         break;
-      case 'serverUpdate':
+      case 'MESSAGE_UPDATE':
+        this.handleMessageData(data, false);
+        break;
+      case 'MESSAGE_DELETE':
+        this.handleDeleteMessage(data);
+        break;
+      case 'SERVER_UPDATE':
         this.handleServerUpdate(data);
         break;
-      case 'messages':
-        this.handleMessagesData(data);
+      case 'SERVER_CREATE':
+        this.handleServerCreate(data);
+        break;
+      case 'SERVER_DELETE':
+        break;
+      case 'CHANNEL_CREATE':
+        this.handleChannelCreate(data);
+        break;
+      case 'CHANNEL_UPDATE':
+        break;
+      case 'CHANNEL_DELETE':
         break;
       case 'me':
         this.handleMeData(data);
-        break;
-      case 'updateMessage':
-        this.handleMessageData(data, false);
-        break;
-      case 'deleteMessage':
-        this.handleDeleteMessage(data);
         break;
     }
   }
 
   handleDeleteMessage(payload) {
-    let record = this.store.peekRecord('message', payload);
-    this.store.unloadRecord(record);
+    this.actions.deleteMessage(payload);
   }
 
   handleMessageData(payload, newMessage) {
-    this.store.push({
-      data: {
-        id: payload._id,
-        type: 'message',
-        attributes: {
-          ...payload,
-        },
-      },
-    });
+    this.actions.addMessage(payload);
+    // this.sound.playNotification();
     if (newMessage) {
       this.chatscroll.newMessage();
     }
   }
 
-  handleServerUpdate(payload) {
-    console.log(payload);
-    this.store.push({
-      data: {
-        id: payload._id,
-        type: 'server',
-        attributes: {
-          ...payload,
-        },
-      },
-    });
+  handleServerCreate(payload) {
+    this.actions.addServer(payload);
   }
 
+  handleServerUpdate(payload) {
+    this.actions.updateServer(payload);
+  }
+
+  handleChannelCreate(payload) {
+    this.actions.addChannel(payload);
+  }
+
+  @action
   handleMeData(data) {
     // User
     this.user.setUser(data.user);
 
+    this.actions.addServers(data.servers);
     // Servers
     let servers = [];
     for (let i = 0; i < data.servers.length; i++) {
+      // this.actions.addServer(data.servers[i]);
+
       servers.push({
         id: data.servers[i]._id,
         type: 'server',
@@ -143,27 +157,21 @@ export default class SocketService extends Service {
         },
       });
     }
-    console.log(data);
 
     this.store.push({
       data: servers,
     });
   }
 
-  handleMessagesData(payload) {
+  async handleMessagesData(payload) {
+    let record = await this.store.findRecord('channel', payload.channelId);
+
     let messages = [];
-    for (let i = 0; i < payload.length; i++) {
-      messages.push({
-        id: payload[i]._id,
-        type: 'message',
-        attributes: {
-          ...payload[i],
-        },
-      });
+    for (let i = 0; i < payload.messages.length; i++) {
+      messages.push(payload.messages[i]);
     }
-    this.store.push({
-      data: messages,
-    });
+    record.messages = messages;
+    record.users = payload.users;
   }
 
   // Sending Messages
@@ -199,3 +207,18 @@ export default class SocketService extends Service {
     this.sendEvent('server', server);
   }
 }
+
+const dispatchToActions = (dispatch) => {
+  return {
+    addServer: (server) => addServer(server, dispatch),
+    addServers: (servers) => addServers(servers, dispatch),
+    // delete server
+    // update server
+    updateServer: (server) => updateServer(server, dispatch),
+    addMessage: (message) => addMessage(message, dispatch),
+    deleteMessage: (message) => deleteMessage(message, dispatch),
+    addChannel: (channel) => addChannel(channel, dispatch),
+  };
+};
+
+export default connect(null, dispatchToActions)(SocketService);

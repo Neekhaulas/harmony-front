@@ -2,7 +2,7 @@
     {{#each this.servers as |server|}}
     <div>
         <EmberTooltip @text={{server.name}} @side="right" @innerClass="tooltip-inner" />
-        <LinkTo class={{if server.selected "server-link server-link-selected" "server-link" }} @route="server"
+        <LinkTo class={{if (eq server.id this.currentServer) "server-link server-link-selected" "server-link" }} @route="server"
             @model={{server.id}}>{{server-name server.name}}</LinkTo>
     </div>
     {{/each}}
