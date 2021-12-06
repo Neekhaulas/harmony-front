@@ -12,6 +12,10 @@ body, html {
     background-color: #5766f2;
 }
 
+* {
+    min-width: 0;
+}
+
 .app {
     @apply flex text-white;
     position: relative;
@@ -21,6 +25,7 @@ body, html {
 
 .base {
     @apply flex flex-grow;
+    min-width: 0;
 }
 
 .server-menu {
@@ -33,17 +38,19 @@ body, html {
     @apply flex flex-col;
     width: 240px;
     background-color: #2f3136;
-    min-height: 0;
 }
 
 .content-menu-main {
     @apply flex flex-1 flex-col;
     min-height: 0;
+    min-width: 0;
 }
 
 .content {
-    @apply flex-grow flex;
+    @apply flex-grow flex-1 flex;
     background-color: #363a3e;
+    min-width: 0;
+    min-height: 0;
 }
 
 .invite {
@@ -132,7 +139,9 @@ body, html {
 }
 
 .messages-list {
-    @apply flex-1 overflow-y-auto overflow-x-hidden;
+    @apply flex-1 overflow-y-auto overflow-x-hidden flex flex-col;
+    min-width: 0;
+    min-height: 0;
 }
 
 ::-webkit-scrollbar {
@@ -163,7 +172,26 @@ background-color: rgba(0, 0, 0, .5);
 }
 
 .message-box {
-    @apply flex;
+    @apply block;
+}
+
+.message-box-attachment {
+    @apply flex flex-none overflow-x-auto mx-4;
+    background-color: #40454a;
+}
+
+.message-box-attachment-block {
+    @apply m-2 flex items-center justify-center;
+    position: relative;
+    min-width: 200px;
+    max-width: 200px;
+    min-height: 200px;
+    max-height: 200px;
+    background-color: #2f3136;
+}
+
+.message-box-attachment-block > img {
+    @apply flex inline-block h-full p-2;
 }
 
 .message-edit-tooltip {
@@ -171,7 +199,7 @@ background-color: rgba(0, 0, 0, .5);
 }
 
 .message-box-container {
-    @apply w-full ml-4 mr-4 mb-4 px-4 rounded-lg flex-1 flex flex-grow;
+    @apply ml-4 mr-4 mb-4 px-4 rounded-lg flex;
     background-color: #40454a;
 }
 
@@ -288,15 +316,50 @@ background-color: rgba(0, 0, 0, .5);
 }
 
 .file-attachment {
-    @apply inline-block;
+    @apply inline-block my-1;
 }
 
 .file-attachment > div {
-    @apply flex flex-1 flex-row p-2 items-center;
+    @apply flex flex-1 flex-row p-2 items-center rounded;
     border-color: #292b2f;
     background-color: #2f3136;
 }
 
 .file-attachment > div > div {
     @apply flex flex-col mx-3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-attachment > div > div > div {
+    max-width: 350px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.code {
+    @apply p-2 border inline-block rounded;
+    color: #b9bbbe;
+    background-color: #2f3136;
+    border-color: #202225;
+    max-width: 600px;
+}
+
+.date-divider {
+    @apply flex flex-none items-center justify-center border-t my-4 h-0;
+    border-color: rgba(255, 255, 255, 0.06);
+    color: #72767d;
+}
+
+.date-divider-text {
+    @apply text-xs font-semibold px-1;
+    background-color: #363a3e;
+}
+
+.message-content {
+    
+    overflow: hidden;
+    overflow-wrap: anywhere;
 }

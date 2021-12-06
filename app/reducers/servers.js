@@ -2,7 +2,7 @@ import merge from 'lodash/merge';
 import omitBy from 'lodash/omitBy';
 import { createSelector } from '@reduxjs/toolkit';
 import * as types from '../actions/types';
-import server from '../controllers/server';
+import moment from 'moment';
 
 const initialState = {
   servers: {},
@@ -87,16 +87,41 @@ export default function servers(state, action) {
         currentChannel: action.channel,
       };
     }
-    case types.ADD_MESSAGES: {
+    case types.SET_MESSAGES: {
+      if (action.messages.length === 0) return state;
       let newMessages = {
-        [action.channel]: action.messages.reduce((obj, item) => {
-          return {
-            ...obj,
-            [item._id]: item,
-          };
+        [action.channel]: action.messages.reduce((previous, current) => {
+          previous[current._id] = current;
+          return previous;
         }, {}),
       };
-      const messages = merge({}, state.messages, newMessages);
+      let messages = merge({}, state.messages, newMessages);
+      return Object.assign({}, state, { messages: messages });
+    }
+    case types.ADD_MESSAGES_BEFORE: {
+      if (action.messages.length === 0) return state;
+      let reducedMessage = action.messages.reduce((previous, current) => {
+        previous[current._id] = current;
+        return previous;
+      }, {});
+      let newMessages = {
+        [action.channel]: reducedMessage,
+      };
+      console.log(newMessages);
+      let messages = merge({}, newMessages, state.messages);
+      return Object.assign({}, state, { messages: messages });
+    }
+    case types.ADD_MESSAGES_AFTER: {
+      if (action.messages.length === 0) return state;
+      let reducedMessage = action.messages.reduce((previous, current) => {
+        previous[current._id] = current;
+        return previous;
+      }, {});
+      let newMessages = {
+        [action.channel]: reducedMessage,
+      };
+      console.log(newMessages);
+      let messages = merge({}, state.messages, newMessages);
       return Object.assign({}, state, { messages: messages });
     }
     case types.ADD_MESSAGE: {
@@ -149,6 +174,13 @@ export default function servers(state, action) {
       const channels = merge({}, state.channels, newChannel);
       return Object.assign({}, state, { channels: channels });
     }
+    case types.SET_PRESENCE: {
+      const newPresences = {
+        [action.presence.server]: action.presence.presences,
+      };
+      const presences = merge({}, state.presence, newPresences);
+      return Object.assign({}, state, { presences: presences });
+    }
     default:
       return state || initialState;
   }
@@ -163,7 +195,7 @@ const allMessages = (state) => {
 };
 
 export const currentServer = (state) => {
-  return parseInt(state.servers.currentServer);
+  return state.servers.currentServer;
 };
 
 const allChannels = (state) => {
@@ -171,7 +203,7 @@ const allChannels = (state) => {
 };
 
 export const currentChannel = (state) => {
-  return parseInt(state.servers.currentChannel);
+  return state.servers.currentChannel;
 };
 
 const allPresences = (state) => {
@@ -222,7 +254,13 @@ export const getCurrentChannelMessages = createSelector(
       (previous, current) => {
         if (previous.at(-1) !== undefined) {
           let previousMessage = previous.at(-1);
-          if (previousMessage.owner !== current.owner) {
+          if (
+            !moment(previousMessage.createdAt).isSame(current.createdAt, 'day')
+          ) {
+            current.renderDate = true;
+            current.dateFormated = moment(current.createdAt).format('LL');
+            current.renderUserInfo = true;
+          } else if (previousMessage.owner !== current.owner) {
             current.renderUserInfo = true;
           }
         } else {

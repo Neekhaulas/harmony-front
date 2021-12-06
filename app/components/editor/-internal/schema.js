@@ -58,7 +58,9 @@ const schema = new ProseMirrorSchema({
         },
       ],
     },
-    ...basicSchemaNodes,
+    doc: basicSchemaNodes.doc,
+    text: basicSchemaNodes.text,
+    block: basicSchemaNodes.paragraph,
   },
 });
 

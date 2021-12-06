@@ -11,7 +11,9 @@ import {
   deleteMessage,
   updateServer,
   addChannel,
+  setPresence,
 } from '../actions/servers';
+import { getCurrentServer } from '../reducers/servers';
 
 class SocketService extends Service {
   @service('websockets') socketService;
@@ -50,6 +52,10 @@ class SocketService extends Service {
     this.getMe();
     if (this.subscribedChannel != null) {
       this.subscribeChannel(this.subscribedChannel);
+    }
+    console.log(this.currentServer);
+    if (this.currentServer != null) {
+      this.requestPresence(this.currentServer);
     }
     this.queue.forEach((element) => {
       this.sendEvent(element.action, element.value);
@@ -108,10 +114,17 @@ class SocketService extends Service {
         break;
       case 'CHANNEL_DELETE':
         break;
+      case 'PRESENCE':
+        this.handlePresence(data);
+        break;
       case 'me':
         this.handleMeData(data);
         break;
     }
+  }
+
+  handlePresence(payload) {
+    this.actions.setPresence(payload);
   }
 
   handleDeleteMessage(payload) {
@@ -122,6 +135,7 @@ class SocketService extends Service {
     this.actions.addMessage(payload);
     // this.sound.playNotification();
     if (newMessage) {
+      console.log('Scroll down');
       this.chatscroll.newMessage();
     }
   }
@@ -144,23 +158,10 @@ class SocketService extends Service {
     this.user.setUser(data.user);
 
     this.actions.addServers(data.servers);
-    // Servers
-    let servers = [];
-    for (let i = 0; i < data.servers.length; i++) {
-      // this.actions.addServer(data.servers[i]);
 
-      servers.push({
-        id: data.servers[i]._id,
-        type: 'server',
-        attributes: {
-          ...data.servers[i],
-        },
-      });
+    if (this.currentServer) {
+      this.requestPresence(this.currentServer.id);
     }
-
-    this.store.push({
-      data: servers,
-    });
   }
 
   async handleMessagesData(payload) {
@@ -206,7 +207,16 @@ class SocketService extends Service {
     this.subscribedServer = server;
     this.sendEvent('server', server);
   }
+
+  requestPresence(server) {
+    this.sendEvent('presence', server);
+  }
 }
+const stateToComputed = (state) => {
+  return {
+    currentServer: getCurrentServer(state),
+  };
+};
 
 const dispatchToActions = (dispatch) => {
   return {
@@ -218,7 +228,8 @@ const dispatchToActions = (dispatch) => {
     addMessage: (message) => addMessage(message, dispatch),
     deleteMessage: (message) => deleteMessage(message, dispatch),
     addChannel: (channel) => addChannel(channel, dispatch),
+    setPresence: (presence) => setPresence(presence, dispatch),
   };
 };
 
-export default connect(null, dispatchToActions)(SocketService);
+export default connect(stateToComputed, dispatchToActions)(SocketService);

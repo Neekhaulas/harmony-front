@@ -2,9 +2,9 @@
     <div>
         <FaIcon @icon="file" @size="3x" />
         <div>
-            <div><a class="link" href={{this.args.attachment.url}}>{{this.args.attachment.fileName}}</a></div>
+            <div><a class="link" href={{this.args.attachment.url}} target="_blank" rel="noopener noreferrer">{{this.args.attachment.fileName}}</a></div>
             <div>{{this.args.attachment.fileSizeBytes}}b</div>
         </div>
-        <a href={{this.args.attachment.url}}><FaIcon @icon="download" @size="2x" /></a>
+        <a href={{this.args.attachment.url}} target="_blank" rel="noopener noreferrer"><FaIcon @icon="download" @size="2x" /></a>
     </div>
 </div>

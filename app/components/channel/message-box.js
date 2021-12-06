@@ -3,12 +3,11 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import ENV from 'front/config/environment';
-import { EditorView } from 'prosemirror-view';
-import { Schema } from 'prosemirror-model';
-import { marks, nodes } from 'prosemirror-schema-basic';
-import { EditorState } from 'prosemirror-state';
+import { connect } from 'ember-redux';
+import { getMessageFiles } from '../../reducers/message';
+import { removeAllFiles } from '../../actions/message';
 
-export default class MessageBoxComponent extends Component {
+class MessageBoxComponent extends Component {
   @tracked isPickerOpen = false;
   @service session;
   @service editor;
@@ -21,6 +20,10 @@ export default class MessageBoxComponent extends Component {
 
   get channel() {
     return this.args.channelId;
+  }
+
+  get hasFiles() {
+    return this.files.length > 0;
   }
 
   @action
@@ -52,13 +55,6 @@ export default class MessageBoxComponent extends Component {
   }
 
   @action
-  keyCheck(event) {
-    if (event.keyCode === 13) {
-      this.sendMessage();
-    }
-  }
-
-  @action
   togglePicker() {
     if (this.isPickerOpen) {
       this.document.removeEventListener('keydown', this.closeEvent);
@@ -80,15 +76,34 @@ export default class MessageBoxComponent extends Component {
   }
 
   sendMessage(message) {
+    //if (message === '' && this.files.length === 0) return;
+    var data = new FormData();
+    this.files.forEach((element) => {
+      delete element.data;
+      data.append(`files`, element);
+    });
+    data.append('content', message);
     fetch(`${ENV.apiUrl}/channels/${this.args.channelId}/messages`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${this.session.data.authenticated.access_token}`,
       },
-      body: JSON.stringify({
-        content: message,
-      }),
+      body: data,
     });
+    this.actions.removeAllFiles();
   }
 }
+
+const stateToComputed = (state) => {
+  return {
+    files: getMessageFiles(state),
+  };
+};
+
+const dispatchToActions = (dispatch) => {
+  return {
+    removeAllFiles: () => removeAllFiles(dispatch),
+  };
+};
+
+export default connect(stateToComputed, dispatchToActions)(MessageBoxComponent);

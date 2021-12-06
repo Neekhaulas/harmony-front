@@ -1,26 +1,37 @@
 <div {{did-insert (action this.storeToService)}} class="messages-list">
-    <div>
-        {{#each this.messages as |message index|}}
-        <div class="message-wrapper">
-            <div class="message" {{did-insert (action this.render)}}>
-                {{#if message.renderUserInfo}}
-                <div class="message-info">
-                    <div class="message-avatar">
-                        <Avatar @author={{message.owner}} />
-                    </div>
-                    <div>
-                        {{#if message.fromDiscord}}
-                        {{message.author}}
-                        {{else}}
-                        <Message::Author @author={{message.owner}} />
-                        {{/if}}
-                        <Message::Time @time={{message.createdAt}} />
-                    </div>
-                </div>
-                {{/if}}
-                <Message::Content @content={{message}} />
-            </div>
-        </div>
-        {{/each}}
+    {{#vertical-collection
+    this.messages
+    estimateHeight=90
+    bufferSize=50
+    key="_id"
+    idForFirstItem=this.firstId
+    firstReached=(action "loadAbove")
+    lastReached=(action "loadBelow") as |message index|
+    }}
+    {{#if message.renderDate}}
+    <div class="date-divider">
+        <span class="date-divider-text">{{message.dateFormated}}</span>
     </div>
+    {{/if}}
+    <div class="message-wrapper">
+        <div class="message" {{did-insert (action this.render)}} {{did-update (action this.render) message._id}}>
+            {{#if message.renderUserInfo}}
+            <div class="message-info">
+                <div class="message-avatar">
+                    <Avatar @author={{message.owner}} />
+                </div>
+                <div>
+                    {{#if message.fromDiscord}}
+                    {{message.author}}
+                    {{else}}
+                    <Message::Author @author={{message.owner}} />
+                    {{/if}}
+                    <Message::Time @time={{message.createdAt}} />
+                </div>
+            </div>
+            {{/if}}
+            <Message::Content @content={{message}} />
+        </div>
+    </div>
+    {{/vertical-collection}}
 </div>

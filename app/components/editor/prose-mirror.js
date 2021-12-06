@@ -62,7 +62,6 @@ export default class ProseMirror extends Component {
         content += '\n';
       }
     });
-    console.log(content);
     this.args.onSend(content);
     dispatch(state.tr.delete(0, state.doc.nodeSize - 2));
     return true;

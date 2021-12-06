@@ -6,11 +6,7 @@ export default class MessageAvatarComponent extends Component {
   @service store;
 
   get user() {
-    if (this.args.author === undefined) return null;
-    if (this.store.peekRecord('user', this.args.author) === null) {
-      return this.store.findRecord('user', this.args.author);
-    }
-    return this.store.peekRecord('user', this.args.author);
+    return null;
   }
 
   get avatar() {

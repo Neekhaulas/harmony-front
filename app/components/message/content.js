@@ -43,7 +43,7 @@ export default class MessageContentComponent extends Component {
   }
 
   get hasAttachments() {
-    return this.args.content.attachments.length > 0;
+    return this.args.content.attachments?.length ?? 0 > 0;
   }
 
   updateMessage(content) {
