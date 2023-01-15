@@ -1,0 +1,30 @@
+<div {{did-insert this.insert}} class="text-2xl font-bold mb-3">Server Overview</div>
+<div class="grid grid-cols-2 gap-2">
+    <div class="flex">
+        <div class="server-image mx-4">
+            {{#if this.editedServer.image}}
+            <img src={{this.image}} />
+            {{else}}
+            {{server-name this.editedServer.name}}
+            {{/if}}
+        </div>
+        <div>
+            <div class="text">We recommend an image of at least 512x512 for the server.</div>
+            <div>
+                <label class="button-outline">
+                    <input {{on "change" this.selectFile}} type="file" />
+                    Upload image
+                </label>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="input-label">
+            Server name
+        </div>
+        <div>
+            <Input class="input" @value={{this.editedServer.name}} />
+        </div>
+    </div>
+    <button {{on "click" this.saveChanges}}>Save changes</button>
+</div>

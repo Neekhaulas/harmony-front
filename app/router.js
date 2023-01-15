@@ -9,9 +9,13 @@ export default class Router extends EmberRouter {
 Router.map(function () {
   this.route('server', { path: '/server/:server_id' }, function () {
     this.route('channel', { path: '/channel/:channel_id' });
+    this.route('settings', () => {
+      this.route('settings', { path: '/:setting' });
+    });
   });
   this.route('emoji', { path: '/server/:server_id/emoji' });
   this.route('login');
   this.route('invite', { path: '/invite/:code' });
   this.route('logout');
+  this.route('settings');
 });

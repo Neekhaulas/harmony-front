@@ -29,22 +29,22 @@ class MessageListComponent extends Component {
 
   @action
   loadAbove() {
+    if (this.messages === null) return;
     this.actions.getMessagesBefore(
       this.channel.id,
       this.messages[0]._id,
       this.session.data.authenticated.access_token
     );
-    return false;
   }
 
   @action
   loadBelow() {
+    if (this.messages === null) return;
     this.actions.getMessagesAfter(
       this.channel.id,
       this.messages[this.messages.length - 1]._id,
       this.session.data.authenticated.access_token
     );
-    return false;
   }
 }
 

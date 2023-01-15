@@ -22,6 +22,7 @@ export default function servers(state, action) {
         [id]: {
           id: action.server._id,
           name: action.server.name,
+          image: action.server.image,
         },
       };
       action.server.channels.forEach((channel) => {
@@ -42,6 +43,7 @@ export default function servers(state, action) {
         newServers[server._id] = {
           id: server._id,
           name: server.name,
+          image: server.image,
         };
         server.channels.forEach((channel) => {
           newChannels[channel._id] = {
@@ -56,21 +58,22 @@ export default function servers(state, action) {
       return Object.assign({}, state, { servers: servers, channels: channels });
     }
     case types.UPDATE_SERVER: {
-      action.server.id = action.server._id;
       const updatedServer = {
         [action.server._id]: {
-          ...state.servers[action.server.id],
+          ...state.servers[action.server._id],
           ...action.server,
         },
       };
       let updatedChannels = {};
-      action.server.channels.forEach((channel) => {
-        updatedChannels[channel._id] = {
-          id: channel._id,
-          name: channel.name,
-          server: channel.server,
-        };
-      });
+      if (action.server.channels !== undefined) {
+        action.server.channels.forEach((channel) => {
+          updatedChannels[channel._id] = {
+            id: channel._id,
+            name: channel.name,
+            server: channel.server,
+          };
+        });
+      }
       const servers = merge({}, state.servers, updatedServer);
       const channels = merge({}, state.channels, updatedChannels);
       return Object.assign({}, state, { servers: servers, channels: channels });
@@ -88,7 +91,6 @@ export default function servers(state, action) {
       };
     }
     case types.SET_MESSAGES: {
-      if (action.messages.length === 0) return state;
       let newMessages = {
         [action.channel]: action.messages.reduce((previous, current) => {
           previous[current._id] = current;

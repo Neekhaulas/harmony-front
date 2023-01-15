@@ -1,6 +1,6 @@
 {{#each this.args.attachments as |attachment|}}
 {{#if (is-media-attachment attachment)}}
-{{{render-attachment attachment.url attachment.fileName}}}
+<ChatImage class="image-attachment" @src={{attachment.url}} />
 {{else}}
 <Message::FileAttachment @attachment={{attachment}} />
 {{/if}}

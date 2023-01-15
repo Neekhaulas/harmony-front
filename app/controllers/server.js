@@ -11,6 +11,11 @@ class ServerController extends Controller {
   openSettings() {
     this.settingsOpen = true;
   }
+
+  @action
+  closeSettings() {
+    this.settingsOpen = false;
+  }
 }
 
 const stateToComputed = (state) => {

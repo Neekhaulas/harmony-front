@@ -2,8 +2,14 @@
     {{#each this.servers as |server|}}
     <div>
         <EmberTooltip @text={{server.name}} @side="right" @innerClass="tooltip-inner" />
-        <LinkTo class={{if (eq server.id this.currentServer) "server-link server-link-selected" "server-link" }} @route="server"
-            @model={{server.id}}>{{server-name server.name}}</LinkTo>
+        <LinkTo class={{if (eq server.id this.currentServer) "server-link server-link-selected" "server-link" }}
+            @route="server" @model={{server.id}}>
+            {{#if server.image}}
+            <img src="https://neekhaulas-harmony.s3.eu-central-1.amazonaws.com/{{server.image}}.png" />
+            {{else}}
+            {{server-name server.name}}
+            {{/if}}
+        </LinkTo>
     </div>
     {{/each}}
 </div>

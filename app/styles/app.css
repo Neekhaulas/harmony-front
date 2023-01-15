@@ -66,12 +66,22 @@ body, html {
     background-color: #36393f;
 }
 
+.server-link > img {
+    @apply rounded-3xl w-12 h-12 transition-all duration-100 ease-linear;
+}
+
 .server-link-selected {
-    @apply rounded-xl;
+    @apply rounded-xl w-12 h-12 hover:rounded-xl transition-all duration-100 ease-linear;
+    background-color: #5866f2;
+}
+
+.server-link-selected > img {
+    @apply rounded-xl w-12 h-12 transition-all duration-100 ease-linear;
 }
 
 .channel-link {
-    @apply flex content-between items-center ml-2 h-8 text-gray-400 rounded leading-4 mr-3;
+    @apply flex content-between items-center ml-2 h-8 px-2 text-gray-400 rounded leading-4 mr-3 hover:text-gray-200 hover:bg-gray-500;
+    flex: 0 1 auto;
 }
 
 .channel-link-open {
@@ -362,4 +372,73 @@ background-color: rgba(0, 0, 0, .5);
     
     overflow: hidden;
     overflow-wrap: anywhere;
+}
+
+.overlay {
+    @apply fixed z-10 inset-0 overflow-y-auto;
+    background-color: #2f3136;
+}
+
+.overlay-panel {
+    @apply flex justify-center h-full w-full;
+}
+
+.overlay-panel-sidebar-region {
+    @apply h-full flex justify-end;
+    flex: 1 0 218px;
+}
+
+.overlay-panel-sidebar {
+    @apply mt-14 flex flex-col;
+    width: 218px;
+}
+
+.overlay-panel-content-region {
+    @apply h-full;
+    background-color: #36393f;
+    flex: 1 1 800px;
+}
+
+.overlay-panel-content {
+    @apply h-full mt-14;
+    width: 800px;
+}
+
+.input-label {
+    @apply text-xs font-semibold uppercase;
+    color: #b9bbbe;
+}
+
+.input {
+    @apply text-sm;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid 1px rgba(0, 0, 0, .3);
+    border-radius: 3px;
+    padding: 10px;
+}
+
+.server-image {
+    @apply flex text-3xl rounded-full shadow-xl justify-center items-center;
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    background-color: #5866f2;
+}
+
+.server-image > img {
+    @apply w-full h-full rounded-full;
+}
+
+.text {
+    @apply text-sm mb-2;
+    color: #b9bbbe;
+}
+
+.button-outline {
+    @apply text-white border border-white rounded-sm px-4 py-1;
+}
+
+input[type="file"] {
+    display: none;
 }

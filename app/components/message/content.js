@@ -62,7 +62,7 @@ export default class MessageContentComponent extends Component {
       fetch(
         `${ENV.apiUrl}/channels/${this.args.content.channel}/messages/${this.args.content._id}`,
         {
-          method: 'PUT',
+          method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${this.session.data.authenticated.access_token}`,

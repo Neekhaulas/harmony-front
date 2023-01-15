@@ -4,9 +4,20 @@ import { action } from '@ember/object';
 export default class ChatscrollService extends Service {
   chatElement = null;
   _isDownWhenReceived = false;
+  sitckingToBottom = false;
 
   setChatElement(element) {
     this.chatElement = element;
+    element.addEventListener('scroll', () => {
+      if (
+        this.chatElement.scrollTop + this.chatElement.clientHeight ==
+        this.chatElement.scrollHeight
+      ) {
+        this.sitckingToBottom = true;
+      } else {
+        this.sitckingToBottom = false;
+      }
+    });
   }
 
   get isDown() {
@@ -24,7 +35,6 @@ export default class ChatscrollService extends Service {
   newMessage() {
     if (this.isDown) {
       this._isDownWhenReceived = true;
-      this.scrollToBottom();
     } else {
       this._isDownWhenReceived = false;
     }
@@ -32,7 +42,8 @@ export default class ChatscrollService extends Service {
 
   @action
   scrollToBottom() {
-    console.log('scroll');
-    this.chatElement.scrollTop = this.chatElement.scrollHeight;
+    if (this.sitckingToBottom) {
+      this.chatElement.scrollTop = this.chatElement.scrollHeight;
+    }
   }
 }

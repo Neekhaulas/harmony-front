@@ -57,3 +57,16 @@ export const addChannel = (channel, dispatch) =>
   dispatch({ type: types.ADD_CHANNEL, channel });
 export const setPresence = (presence, dispatch) =>
   dispatch({ type: types.SET_PRESENCE, presence });
+export const patchServer = (server, token, dispatch) =>
+  fetch(`${ENV.apiUrl}/servers/${server.id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(server),
+  })
+    .then((res) => res.json())
+    .then((server) => {
+      return dispatch({ type: types.UPDATE_SERVER, server });
+    });

@@ -1,0 +1,42 @@
+{{page-title "Settings"}}
+<div class="overlay" role="dialog" aria-modal="true">
+    <div class="flex text-center h-full" style="font-size: 0;">
+        <div class="flex text-base text-left transform transition w-full h-full">
+            <div class="w-full min-h-full relative flex overflow-hidden">
+                <div class="overlay-panel">
+                    <div class="overlay-panel-sidebar-region">
+                        <div class="overlay-panel-sidebar">
+                            Server name
+                            {{#each this.serverSettings as |serverSetting|}}
+                            <button class="channel-link" type="button">{{serverSetting.name}}</button>
+                            {{/each}}
+                            <hr />
+                            <div>User management</div>
+                            <button class="channel-link" type="button">Members</button>
+                            <button class="channel-link" type="button">Invites</button>
+                            <button class="channel-link" type="button">Bans</button>
+                        </div>
+                    </div>
+                    <div class="overlay-panel-content-region">
+                        <div class="overlay-panel-content">
+                            <div><button {{on 'click' this.closeSettings}} type="button"
+                                    class="absolute top-4 right-4 text-gray-400 hover:text-gray-500 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8">
+                                    <span class="sr-only">Close</span>
+                                    <!-- Heroicon name: outline/x -->
+                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="px-10">
+                            {{(component this.selectedComponent)}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
